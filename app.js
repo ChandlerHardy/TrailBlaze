@@ -52,12 +52,6 @@ app.use(
 );
 const secret = process.env.SECRET || "thisshouldbeabettersecret!";
 
-// const store = new MongoDBStore({
-//   url: dbUrl,
-//   secret,
-//   touchAfter: 24 * 60 * 60,
-// });
-
 const store = MongoStore.create({
   mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
