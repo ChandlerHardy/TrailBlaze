@@ -18,9 +18,9 @@ const mongoSanitize = require("express-mongo-sanitize");
 const userRoutes = require("./routes/users");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
+const MongoStore = require("connect-mongo");
 
-const MongoDBStore = require("connect-mongo")(session);
-
+// const MongoDBStore = require("connect-mongo")(session);
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 
 mongoose.connect(dbUrl, {
@@ -52,10 +52,18 @@ app.use(
 );
 const secret = process.env.SECRET || "thisshouldbeabettersecret!";
 
-const store = new MongoDBStore({
-  url: dbUrl,
-  secret,
+// const store = new MongoDBStore({
+//   url: dbUrl,
+//   secret,
+//   touchAfter: 24 * 60 * 60,
+// });
+
+const store = MongoStore.create({
+  mongoUrl: dbUrl,
   touchAfter: 24 * 60 * 60,
+  crypto: {
+    secret: "thisshouldbeabettersecret!",
+  },
 });
 
 store.on("error", function (e) {
